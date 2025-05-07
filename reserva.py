@@ -1,5 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for  # type: ignore
-from flask_sqlalchemy import SQLAlchemy  # type: ignore
+from flask import Flask, request, render_template, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///reservas.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-# Modelo
+#Modelo de base de datos
 class Reserva(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.Date, nullable=False)
@@ -16,14 +16,14 @@ class Reserva(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     correo = db.Column(db.String(100), nullable=False)
 
-# Ruta principal
+#Ruta principal: muestra reservas
 @app.route('/')
 def index():
-    return render_template('index.html')
-    # return 'hola'
+    reservas = Reserva.query.order_by(Reserva.fecha).all()
+    return render_template('index.html', reservas=reservas)
 
-# Ruta que guarda la reserva
-@app.route('/reservar', methods=['POST'])
+#Ruta para guardar reserva
+@app.route("/reservar", methods=['POST'])
 def reservar():
     fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
     hora_entrada = datetime.strptime(request.form['hora_entrada'], '%H:%M').time()
@@ -40,10 +40,20 @@ def reservar():
     )
     db.session.add(nueva_reserva)
     db.session.commit()
-    return redirect('/')
+    return redirect(url_for('index'))
 
+#Ruta para eliminar una reserva
+@app.route("/eliminar-reserva/<int:id>", methods=["POST"])
+def eliminar_reserva(id):
+    reserva = Reserva.query.filter_by(id=id).first()
+    if reserva:
+        db.session.delete(reserva)
+        db.session.commit()
+    return redirect(url_for('index'))
+
+# Main entry point
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    print("🌟 Flask está corriendo en http://127.0.0.1:5000")
+    print("Flask está corriendo en http://127.0.0.1:5000")
     app.run(debug=True)
