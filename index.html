@@ -20,7 +20,7 @@
     </header>
     <main class="mt-6 px-4 max-w-xl mx-auto">
         <h1 class="text-left text-2xl font-bold text-gray-100 mb-6">RESERVA ALGO</h1>
-        <form action="" class="flex-1 bg-gray-500 px-4 py-6 rounded-md shadow">
+        <form action="" class="flex-1 bg-gray-500 px-4 py-6 rounded-md shadow" method="POST">
             <div class="mb-4">
                 <label for="Fecha" class="text-blue-400 font-bold">Eliga la Fecha a reservar</label>
                 <input 
@@ -47,7 +47,7 @@
             <button type="submit">Enviar</button>
            
         </form>
-        
+
         <form action="/eliminar-reserva/{{reserva.id}}" method="POST">
 
             
