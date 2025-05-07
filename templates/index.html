@@ -1,0 +1,124 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODEPRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            cursor: url('/static/img/tiza.png') 8 8, auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-blue-500 p-4 text-white text-xl font-bold">Reservas</header>
+    <nav class="max-w-6xl mx-auto flex justify-between items-center p-4">
+        <a href="#" class="text-xl font-bold">Sistema de Reservas</a>
+        <ul class="flex space-x-4">
+            <li><a href="#" class="hover:text-blue-400">PRINCIPAL</a></li>
+            <li><a href="#" class="hover:text-blue-400">NOTICIAS</a></li>
+        </ul>
+    </nav>
+
+    <main class="mt-6 px-4 max-w-xl mx-auto">
+        <h1 class="text-left text-2xl font-bold text-gray-100 mb-6">RESERVA ALGO</h1>
+        <form action="/reservar" method="POST" class="bg-gray-700 p-6 rounded-md shadow-lg">
+            <div class="mb-4">
+                <label for="fecha" class="block text-blue-400 font-bold mb-1">Elige la Fecha a reservar</label>
+                <input 
+                    type="date"
+                    id="fecha"
+                    name="fecha"
+                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out"
+                    required
+                >
+            </div>
+            <div class="mb-4">
+                <label for="hora_entrada" class="block text-blue-400 font-bold mb-1">Hora de entrada</label>
+                <input 
+                    type="time" 
+                    id="hora_entrada" 
+                    name="hora_entrada" 
+                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
+                    required
+                >
+            </div>
+            <div class="mb-4">
+                <label for="hora_salida" class="block text-blue-400 font-bold mb-1">Hora de salida</label>
+                <input 
+                    type="time" 
+                    id="hora_salida" 
+                    name="hora_salida" 
+                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
+                    required
+                >
+            </div>
+            <div class="mb-4">
+                <label for="nombre" class="block text-blue-400 font-bold mb-1">Nombre de la reserva</label>
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
+                    required
+                >
+            </div>
+            <div class="mb-4">
+                <label for="correo" class="block text-blue-400 font-bold mb-1">Correo</label>
+                <input 
+                    type="email" 
+                    id="correo" 
+                    name="correo" 
+                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
+                    required
+                >
+            </div>
+            <button type="submit" class="bg-blue-400 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded transition duration-200">
+                Enviar
+            </button>
+        </form>
+        
+
+        <h2 class="text-xl font-bold mb-4 text-blue-300 mt-8">Reservas registradas</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left bg-gray-800 rounded-md">
+                <thead class="bg-blue-600 text-white">
+                    <tr>
+                        <th class="p-2">Fecha</th>
+                        <th class="p-2">Entrada</th>
+                        <th class="p-2">Salida</th>
+                        <th class="p-2">Nombre</th>
+                        <th class="p-2">Correo</th>
+                        <th class="p-2">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in reservas %}
+                    <tr class="border-b border-gray-700 hover:bg-gray-700">
+                        <td class="p-2">{{ reserva.fecha }}</td>
+                        <td class="p-2">{{ reserva.hora_entrada }}</td>
+                        <td class="p-2">{{ reserva.hora_salida }}</td>
+                        <td class="p-2">{{ reserva.nombre }}</td>
+                        <td class="p-2">{{ reserva.correo }}</td>
+                        <td class="p-2">
+                            <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');">
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="p-2 text-center text-gray-400">No hay reservas aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>    
+            </table>
+        </div>
+    </main>
+</body> 
+</html>
