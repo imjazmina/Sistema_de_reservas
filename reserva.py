@@ -31,6 +31,9 @@ def reservar():
     nombre = request.form['nombre']
     correo = request.form['correo']
 
+    existente =Reserva.query.filter_by(fecha=fecha, hora_entrada=hora_entrada).first()
+
+
     nueva_reserva = Reserva(
         fecha=fecha,
         hora_entrada=hora_entrada,
