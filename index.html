@@ -8,7 +8,8 @@
     <title>CODEPRO</title>
 </head>
 <body>
-    <header class="bg-blue-500">Rerverses</header>
+    <header class="bg-blue-500">
+        Rerverses
         <nav class="max-w-6xl mx-auto flex justify-between items-center">
             <a href="#" class="text-xl font-bold">holos este hay que cambiar</a>
             <ul class="flex space-x-4">
@@ -19,39 +20,39 @@
     </header>
     <main class="mt-6 px-4 max-w-xl mx-auto">
         <h1 class="text-left text-2xl font-bold text-gray-100 mb-6">RESERVA ALGO</h1>
-        <form action="" class="flex-1 bg-gray-500 px-4-py-6 rounded-md shadow"></form>
-        <div class="mb-4">
-            <label for="Fecha" class="text-blue-400 font-bold">
-                Eliga la Fecha a reservar</label>
+        <form action="" class="flex-1 bg-gray-500 px-4 py-6 rounded-md shadow">
+            <div class="mb-4">
+                <label for="Fecha" class="text-blue-400 font-bold">Eliga la Fecha a reservar</label>
                 <input 
-                type="date"
-                id="fecha"
-                name="fecha"
-                class="w-full p-2 border rounded-md"
-                required
+                    type="date"
+                    id="fecha"
+                    name="fecha"
+                    class="w-full p-2 border rounded-md"
+                    required
                 >
             </div>
-        <div class="mb-4">
-            <label for="Horario">
-                Hora
-            </label>
-            <input type="time" id="hora_entrada" name="hora_entrada" required>
-             <input type="time" id="hora_salida" name="hora_salida" required>
-        </div>
-        <div>
-            <label for="nombre">Nombre de la reserva</label>
-            <input type="text" id="nombre" name="nombre" required>
-        </div>
-        <div>
-            <label for="correo">Correo</label>
-            <input type="text" id="correo" name="correo" required>
-        </div>
-        <button type="submit"> Enviar
-         <h1>hola</h1>
-        </button>
-        <h1>Prueba</h1>
+            <div class="mb-4">
+                <label for="Horario">Hora</label>
+                <input type="time" id="hora_entrada" name="hora_entrada" required>
+                <input type="time" id="hora_salida" name="hora_salida" required>
+            </div>
+            <div class="mb-4">
+                <label for="nombre">Nombre de la reserva</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-4">
+                <label for="correo">Correo</label>
+                <input type="text" id="correo" name="correo" required>
+            </div>
+            <button type="submit">Enviar</button>
+           
+        </form>
+        
+        <form action="/eliminar-reserva/{{reserva.id}}" method="POST">
 
-    
+            
+            <button type="sumbit">Eliminar</button>
+        </form>
     </main>
-</body> 
+</body>
 </html>

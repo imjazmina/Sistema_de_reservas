@@ -15,6 +15,7 @@ class Reserva(db.Model):
     hora_salida = db.Column(db.Time, nullable=False)
     nombre = db.Column(db.String(50), nullable=False)
     correo = db.Column(db.String(100), nullable=False)
+    eliminar = db.column(db.booleano, default=False)
 
 # Ruta principal
 @app.route('/')
@@ -40,6 +41,15 @@ def reservar():
     db.session.add(nueva_reserva)
     db.session.commit()  
     return redirect(url_for('index')) 
+
+@app.route("/eliminar-reserva/int:id>", methods =["POST"])
+def eliminar_reserva():
+    reserva= reserva.query.filter_by(id=id).firts()
+    db.session.delete(reserva)
+    db.session.commit()
+    return redirect("/")
+  
+
 
 if __name__ == '__main__':
     with app.app_context():
