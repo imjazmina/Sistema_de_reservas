@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CODEPRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
         body {
             cursor: url('/static/img/tiza.png') 8 8, auto;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="h-screen bg-gradient-to-r from-teal-400 to-yellow-300">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="bg-blue-400 text-white p-4 mb-4 rounded">
@@ -32,37 +31,43 @@
         </ul>
     </nav>
 
-    <main class="mt-6 px-4 max-w-xl mx-auto">
+    <main class="mt-6 px-4 max-w-xl mx-auto relative">
+        <div class="w-3/5 bg-white rounded-full shadow-md flex items-center p-4 mb-6">
+            <button class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">+</button>
+            <span class="text-gray-500">Agregar...</span>
+        </div>
+
         <h1 class="text-left text-2xl font-bold text-gray-100 mb-6">RESERVA ALGO</h1>
 
-        <form action="/reservar" method="POST" class="bg-gray-700 p-6 rounded-md shadow">
+        <form action="/reservar" method="POST" class="bg-white bg-opacity-70 p-6 rounded-xl shadow-md max-w-lg mx-auto">
+            <h2 class="text-xl font-bold text-teal-700 mb-4">Realizar Reserva</h2>
             <div class="mb-4">
-                <label for="fecha" class="text-blue-400 font-bold">Elige la Fecha a reservar</label>
+                <label for="fecha" class="block text-teal-600 font-semibold mb-2">Elige la Fecha a reservar</label>
                 <input
                     type="date"
                     id="fecha"
                     name="fecha"
-                    class="w-full p-2 border rounded-md"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
                     required
                 >
             </div>
             <div class="mb-4">
-                <label for="hora_entrada" class="block">Hora de entrada</label>
-                <input type="time" id="hora_entrada" name="hora_entrada" class="w-full p-2 border rounded-md" required>
+                <label for="hora_entrada" class="block text-teal-600 font-semibold mb-2">Hora de entrada</label>
+                <input type="time" id="hora_entrada" name="hora_entrada" class="w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" required>
             </div>
             <div class="mb-4">
-                <label for="hora_salida" class="block">Hora de salida</label>
-                <input type="time" id="hora_salida" name="hora_salida" class="w-full p-2 border rounded-md" required>
+                <label for="hora_salida" class="block text-teal-600 font-semibold mb-2">Hora de salida</label>
+                <input type="time" id="hora_salida" name="hora_salida" class="w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" required>
             </div>
             <div class="mb-4">
-                <label for="materia" class="block">Materia</label>
-                <input type="text" id="materia" name="materia" class="w-full p-2 border rounded-md" required>
+                <label for="materia" class="block text-teal-600 font-semibold mb-2">Materia</label>
+                <input type="text" id="materia" name="materia" class="w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" required>
             </div>
             <div class="mb-4">
-                <label for="tutor" class="block">Tutor</label>
-                <input type="text" id="tutor" name="tutor" class="w-full p-2 border rounded-md" required>
+                <label for="tutor" class="block text-teal-600 font-semibold mb-2">Tutor</label>
+                <input type="text" id="tutor" name="tutor" class="w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" required>
             </div>
-            <button type="submit" class="bg-blue-400 text-white font-bold px-4 py-2 rounded">Enviar</button>
+            <button type="submit" class="bg-teal-500 text-white font-bold px-6 py-3 rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2">Enviar Reserva</button>
         </form>
 
         <h2 class="text-xl font-bold mb-4 text-blue-300 mt-8">Reservas registradas</h2>
@@ -103,6 +108,14 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <div class="w-2/3 bg-white rounded-xl shadow-lg flex items-center justify-between p-4 mt-8">
+            <p class="text-sm text-gray-600">No existen sesiones</p>
+            <div class="flex gap-4">
+                <button class="text-red-600 text-xl">🗑️</button>
+                <button class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center">+</button>
+            </div>
         </div>
     </main>
 
