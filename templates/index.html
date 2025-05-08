@@ -38,7 +38,7 @@
         <form action="/reservar" method="POST" class="bg-gray-700 p-6 rounded-md shadow">
             <div class="mb-4">
                 <label for="fecha" class="text-blue-400 font-bold">Elige la Fecha a reservar</label>
-                <input 
+                <input
                     type="date"
                     id="fecha"
                     name="fecha"
@@ -86,18 +86,14 @@
                         <td class="p-2">{{ reserva.hora_salida }}</td>
                         <td class="p-2">{{ reserva.materia }}</td>
                         <td class="p-2">{{ reserva.tutor }}</td>
-                        <td class="p-2">
-                            <div style="display: flex; gap: 0.5rem;">
-                                 <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');">
-                                     <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">
-                                       Eliminar
-                                         </button>
-                                    </form>
-                                     <button type="button" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-sm">
-                                        Editar
-                                         </button>
-                            </div>
-                        
+                        <td class="p-2 flex space-x-2">
+                            <button type="button" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm"
+                                    onclick="mostrarModalEliminar({{ reserva.id }})">
+                                Eliminar
+                            </button>
+                            <button type="button" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-sm">
+                                Editar
+                            </button>
                         </td>
                     </tr>
                     {% else %}
@@ -105,9 +101,50 @@
                         <td colspan="6" class="p-2 text-center text-gray-400">No hay reservas aún.</td>
                     </tr>
                     {% endfor %}
-                </tbody>    
+                </tbody>
             </table>
         </div>
     </main>
-</body> 
+
+    <div id="modalEliminar" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden"
+         aria-labelledby="modal-title" aria-modal="true" role="dialog">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-gray-700 rounded-lg shadow-xl max-w-md w-full">
+                <div class="px-6 py-6 lg:px-8">
+                    <h3 class="mb-4 text-xl font-medium text-gray-300">Confirmar Eliminación</h3>
+                    <p class="text-sm text-gray-400 mb-4">
+                        ¿Estás seguro de que quieres eliminar esta reserva? Esta acción no se puede deshacer.
+                    </p>
+                    <div class="flex justify-end gap-4">
+                        <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="ocultarModalEliminar()">
+                            Cancelar
+                        </button>
+                        <form id="formEliminarModal" action="" method="POST">
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let reservaIdAEliminar = null;
+        const modalEliminar = document.getElementById('modalEliminar');
+        const formEliminarModal = document.getElementById('formEliminarModal');
+
+        function mostrarModalEliminar(id) {
+            reservaIdAEliminar = id;
+            formEliminarModal.action = `/eliminar-reserva/${id}`;
+            modalEliminar.classList.remove('hidden');
+        }
+
+        function ocultarModalEliminar() {
+            reservaIdAEliminar = null;
+            modalEliminar.classList.add('hidden');
+        }
+    </script>
+</body>
 </html>
