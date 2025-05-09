@@ -1,3 +1,4 @@
+# --- Importaciones ---
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -16,9 +17,15 @@ class Reserva(db.Model):
     hora_salida = db.Column(db.Time, nullable=False)
     materia = db.Column(db.String(50), nullable=False)
     tutor = db.Column(db.String(100), nullable=False)
+    completada = db.Column(db.Boolean, default=False)
+
+#ruta de inicio
+@app.route('/')
+def inicio():
+    return render_template('inicio.html')#ruta de inicio
 
 # Ruta principal
-@app.route('/')
+@app.route('/index')
 def index():
     reservas = Reserva.query.order_by(Reserva.fecha).all()
     edit_id = request.args.get('edit_id', type=int)
@@ -106,6 +113,15 @@ def actualizar(id):
     except Exception as e:
         flash(f"Error al actualizar la reserva: {str(e)}", "error")
 
+    return redirect(url_for('index'))
+
+# Cambiar el estado de una reserva
+@app.route("/completada/<int:id>", methods=["POST"])
+def completada(id):
+    reserva = Reserva.query.get_or_404(id)
+    reserva.completada = not reserva.completada
+    db.session.commit()
+    flash("Estado de la reserva actualizado.")
     return redirect(url_for('index'))
 
 # Main

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CODEPRO</title>
+  <title>TURNOGA</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/modales.js"></script>
   <style>
@@ -11,92 +11,89 @@
       cursor: url('/static/img/tiza.png') 8 8, auto;
     }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const mensajeFlashContainer = document.getElementById('mensaje-flash-container');
+      if (mensajeFlashContainer) {
+        mensajeFlashContainer.classList.remove('opacity-0');
+        setTimeout(() => {
+          mensajeFlashContainer.classList.add('opacity-0');
+          setTimeout(() => mensajeFlashContainer.remove(), 300);
+        }, 3000);
+      }
+    });
+  </script>
 </head>
 
-<body class="h-screen bg-gradient-to-br from-gray-100 to-teal-100 text-gray-800 font-sans">
-  <!-- Botón flotante -->
-  <div class="fixed bottom-6 right-6 z-50">
-    <button onclick="toggleFormulario()" id="toggleFormBtn"
-      class="w-14 h-14 bg-teal-500 text-white rounded-full text-4xl shadow-lg flex items-center justify-center hover:bg-teal-600 hover:scale-110 transition-all duration-300">
-      +
-    </button>
-  </div>
+<body class="min-h-screen bg-emerald-100 text-gray-800 font-sans">
 
-  <!-- Flash mensajes -->
+  <header class="flex items-center justify-between p-6 md:px-10 bg-gradient-to-r from-green-700 via-green-600 to-teal-500 text-white shadow-2xl border-b-4 border-teal-500 rounded-b-3xl">
+    <a class="text-3xl font-extrabold tracking-wide" href="/">🌿 Clase Roga</a>
+    <nav class="space-x-6 text-lg">
+      <a href="/" class="hover:text-gray-100 font-medium transition duration-300">Inicio</a>
+      <a href="#contacto" class="hover:text-gray-100 font-medium transition duration-300">Contáctanos</a>
+    </nav>
+  </header>
+
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <div id="mensaje-flash-container"
-        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-8 py-6 rounded-lg shadow-xl z-50 opacity-0 transition-opacity duration-300">
+        class="bg-green-500 text-white text-center p-3 mt-4 rounded-md mx-auto max-w-lg shadow-md opacity-0 transition-opacity duration-300 z-50">
         {% for message in messages %}
           <p id="mensaje-flash-texto">{{ message }}</p>
         {% endfor %}
       </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const mensajeFlashContainer = document.getElementById('mensaje-flash-container');
-          if (mensajeFlashContainer) {
-            mensajeFlashContainer.classList.remove('opacity-0');
-            setTimeout(() => {
-              mensajeFlashContainer.classList.add('opacity-0');
-              setTimeout(() => mensajeFlashContainer.remove(), 300);
-            }, 3000);
-          }
-        });
-      </script>
     {% endif %}
   {% endwith %}
 
-  <!-- Contenido principal -->
-  <main class="mt-8 px-4 max-w-5xl mx-auto relative">
+  <main class="py-16 px-6 max-w-5xl mx-auto">
+
     <!-- Formulario -->
     <form action="/reservar" method="POST"
-      class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl backdrop-blur-md transition-all duration-300"
+      class="bg-green-50 border border-green-400 p-8 rounded-2xl shadow-3xl transition duration-300 transform  max-w-3xl mx-auto mb-12"
       id="formReserva">
-      <h2 class="text-2xl font-extrabold text-teal-700 mb-6 text-center">Realizar Reserva</h2>
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Reserva tu clase hoy mismo</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label for="fecha" class="block text-teal-600 font-semibold mb-2">Elige la Fecha</label>
-          <input type="date" id="fecha" name="fecha"
-            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+          <label for="fecha" class="block text-gray-700 font-medium mb-2">Fecha de la clase:</label>
+          <input type="date" id="fecha" name="fecha" class="w-full p-3 border border-gray-300 rounded-lg" required>
         </div>
         <div>
-          <label for="hora_entrada" class="block text-teal-600 font-semibold mb-2">Hora de entrada</label>
-          <input type="time" id="hora_entrada" name="hora_entrada"
-            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+          <label for="hora_entrada" class="block text-gray-700 font-medium mb-2">Hora de entrada:</label>
+          <input type="time" id="hora_entrada" name="hora_entrada" class="w-full p-3 border border-gray-300 rounded-lg" required>
         </div>
         <div>
-          <label for="hora_salida" class="block text-teal-600 font-semibold mb-2">Hora de salida</label>
-          <input type="time" id="hora_salida" name="hora_salida"
-            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+          <label for="hora_salida" class="block text-gray-700 font-medium mb-2">Hora de salida:</label>
+          <input type="time" id="hora_salida" name="hora_salida" class="w-full p-3 border border-gray-300 rounded-lg" required>
         </div>
         <div>
-          <label for="materia" class="block text-teal-600 font-semibold mb-2">Materia</label>
-          <input type="text" id="materia" name="materia"
-            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+          <label for="materia" class="block text-gray-700 font-medium mb-2">Materia:</label>
+          <input type="text" id="materia" name="materia" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Escribe la materia">
         </div>
         <div class="md:col-span-2">
-          <label for="tutor" class="block text-teal-600 font-semibold mb-2">Tutor</label>
-          <input type="text" id="tutor" name="tutor"
-            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+          <label for="tutor" class="block text-gray-700 font-medium mb-2">Tutor:</label>
+          <input type="text" id="tutor" name="tutor" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Escribe el nombre del tutor">
         </div>
       </div>
 
-      <div class="text-center mt-6">
+      <div class="text-center mt-8">
         <button type="submit"
-          class="bg-teal-500 text-white font-bold px-8 py-3 rounded-full hover:bg-teal-600 shadow-lg transition-all duration-300">
-          Enviar Reserva
+          class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-xl text-lg font-semibold transition duration-300">
+          Reservar ahora
         </button>
       </div>
     </form>
 
-    <!-- Tabla de reservas -->
-    <h2 class="text-3xl font-semibold text-green-700 my-8 text-center">Reservas registradas</h2>
+    <!-- Tabla -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Clases registradas</h2>
 
-    <div class="overflow-x-auto rounded-xl shadow-xl">
-      <table class="min-w-full bg-white text-sm text-center">
+    <div class="bg-green-50 border border-green-400 p-4 rounded-2xl shadow-3xl transition duration-300 transform hover:scale-105 hover:shadow-green-300">
+
+      <table class="min-w-full text-sm text-center">
         <thead class="bg-teal-600 text-white text-md uppercase">
           <tr>
+            <th class="px-6 py-4">Estado</th>
             <th class="px-6 py-4">Fecha</th>
             <th class="px-6 py-4">Hora Entrada</th>
             <th class="px-6 py-4">Hora Salida</th>
@@ -107,29 +104,31 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           {% for reserva in reservas %}
-            <tr class="hover:bg-teal-50">
+            <tr class="hover:bg-teal-50 transition-colors duration-200">
               {% if reserva_actualizada and reserva.id == reserva_actualizada.id %}
                 <form action="{{ url_for('actualizar', id=reserva.id) }}" method="POST">
                   <td class="px-4 py-3">
-                    <input type="date" name="fecha" value="{{ reserva.fecha }}" class="bg-white text-gray p-2 rounded" required>
+                    <form action="/completada/{{ reserva.id }}" method="POST">
+                      <input type="checkbox" onchange="this.form.submit()" {% if reserva.completada %} checked {% endif %}
+                        class="w-4 h-4 accent-blue-500 rounded focus:ring-2 focus:ring-blue-400 transition duration-200" />
+                    </form>
                   </td>
-                  <td class="px-4 py-3">
-                    <input type="time" name="hora_entrada" value="{{ reserva.hora_entrada }}" class="bg-white text-gray p-2 rounded" required>
-                  </td>
-                  <td class="px-4 py-3">
-                    <input type="time" name="hora_salida" value="{{ reserva.hora_salida }}" class="bg-white text-gray p-2 rounded" required>
-                  </td>
-                  <td class="px-4 py-3">
-                    <input type="text" name="materia" value="{{ reserva.materia }}" class="bg-white text-gray p-2 rounded" required>
-                  </td>
-                  <td class="px-4 py-3">
-                    <input type="text" name="tutor" value="{{ reserva.tutor }}" class="bg-white text-gray p-2 rounded" required>
-                  </td>
-                  <td class="px-4 py-3">
+                  <td><input type="date" name="fecha" value="{{ reserva.fecha }}" class="bg-white p-2 rounded w-full {% if reserva.completada %}line-through text-gray-400{% endif %}" required></td>
+                  <td><input type="time" name="hora_entrada" value="{{ reserva.hora_entrada }}" class="bg-white p-2 rounded w-full" required></td>
+                  <td><input type="time" name="hora_salida" value="{{ reserva.hora_salida }}" class="bg-white p-2 rounded w-full" required></td>
+                  <td><input type="text" name="materia" value="{{ reserva.materia }}" class="bg-white p-2 rounded w-full" required></td>
+                  <td><input type="text" name="tutor" value="{{ reserva.tutor }}" class="bg-white p-2 rounded w-full" required></td>
+                  <td>
                     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Guardar</button>
                   </td>
                 </form>
               {% else %}
+                <td>
+                  <form action="/completada/{{ reserva.id }}" method="POST">
+                    <input type="checkbox" onchange="this.form.submit()" {% if reserva.completada %} checked {% endif %}
+                      class="w-4 h-4 accent-blue-500 rounded focus:ring-2 focus:ring-blue-400 transition duration-200" />
+                  </form>
+                </td>
                 <td class="px-4 py-3">{{ reserva.fecha }}</td>
                 <td class="px-4 py-3">{{ reserva.hora_entrada }}</td>
                 <td class="px-4 py-3">{{ reserva.hora_salida }}</td>
@@ -151,27 +150,5 @@
       </table>
     </div>
   </main>
-
-  <!-- Scripts -->
-  <script>
-    function toggleFormulario() {
-      const form = document.getElementById('formReserva');
-      const btn = document.getElementById('toggleFormBtn');
-      form.classList.toggle('hidden');
-      btn.classList.toggle('rotate-45');
-    }
-
-    function mostrarModalEliminar(id) {
-      const modalEliminar = document.getElementById('modalEliminar');
-      const formEliminarModal = document.getElementById('formEliminarModal');
-      formEliminarModal.action = `/eliminar-reserva/${id}`;
-      modalEliminar.classList.remove('hidden');
-    }
-
-    function ocultarModalEliminar() {
-      const modalEliminar = document.getElementById('modalEliminar');
-      modalEliminar.classList.add('hidden');
-    }
-  </script>
 </body>
 </html>
