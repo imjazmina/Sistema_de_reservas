@@ -1,132 +1,177 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CODEPRO</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/js/modales.js"></script>
-    <style>
-        body {
-            cursor: url('/static/img/tiza.png') 8 8, auto;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CODEPRO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/modales.js"></script>
+  <style>
+    body {
+      cursor: url('/static/img/tiza.png') 8 8, auto;
+    }
+  </style>
 </head>
-<body class="h-screen bg-gradient-to-r from-teal-400 to-yellow-300 flex">
-    <aside class="w-1/5 bg-green-700 text-white flex flex-col items-center justify-between p-6 rounded-r-3xl">
-        <div class="space-y-8">
-          <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-green-700 text-3xl font-bold">
-            👤
-          </div>
-          <div class="text-center text-4xl font-bold">100</div>
-          <div class="text-3xl">🏆</div>
+
+<body class="h-screen bg-gradient-to-br from-gray-100 to-teal-100 text-gray-800 font-sans">
+  <!-- Botón flotante -->
+  <div class="fixed bottom-6 right-6 z-50">
+    <button onclick="toggleFormulario()" id="toggleFormBtn"
+      class="w-14 h-14 bg-teal-500 text-white rounded-full text-4xl shadow-lg flex items-center justify-center hover:bg-teal-600 hover:scale-110 transition-all duration-300">
+      +
+    </button>
+  </div>
+
+  <!-- Flash mensajes -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div id="mensaje-flash-container"
+        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-8 py-6 rounded-lg shadow-xl z-50 opacity-0 transition-opacity duration-300">
+        {% for message in messages %}
+          <p id="mensaje-flash-texto">{{ message }}</p>
+        {% endfor %}
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const mensajeFlashContainer = document.getElementById('mensaje-flash-container');
+          if (mensajeFlashContainer) {
+            mensajeFlashContainer.classList.remove('opacity-0');
+            setTimeout(() => {
+              mensajeFlashContainer.classList.add('opacity-0');
+              setTimeout(() => mensajeFlashContainer.remove(), 300);
+            }, 3000);
+          }
+        });
+      </script>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Contenido principal -->
+  <main class="mt-8 px-4 max-w-5xl mx-auto relative">
+    <!-- Formulario -->
+    <form action="/reservar" method="POST"
+      class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl backdrop-blur-md transition-all duration-300"
+      id="formReserva">
+      <h2 class="text-2xl font-extrabold text-teal-700 mb-6 text-center">Realizar Reserva</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="fecha" class="block text-teal-600 font-semibold mb-2">Elige la Fecha</label>
+          <input type="date" id="fecha" name="fecha"
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
         </div>
-      </aside>
-
-    <main class="mt-6 px-4 max-w-xl mx-auto">
-        <h1 class="text-left text-2xl font-bold text-gray-100 mb-6">RESERVA ALGO</h1>
-        <form action="/reservar" method="POST" class="bg-gray-700 p-6 rounded-md shadow-lg">
-            <div class="mb-4">
-                <label for="fecha" class="block text-blue-400 font-bold mb-1">Elige la Fecha a reservar</label>
-                <input 
-                    type="date"
-                    id="fecha"
-                    name="fecha"
-                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out"
-                    required
-                >
-            </div>
-            <div class="mb-4">
-                <label for="hora_entrada" class="block text-blue-400 font-bold mb-1">Hora de entrada</label>
-                <input 
-                    type="time" 
-                    id="hora_entrada" 
-                    name="hora_entrada" 
-                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
-                    required
-                >
-            </div>
-            <div class="mb-4">
-                <label for="hora_salida" class="block text-blue-400 font-bold mb-1">Hora de salida</label>
-                <input 
-                    type="time" 
-                    id="hora_salida" 
-                    name="hora_salida" 
-                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
-                    required
-                >
-            </div>
-            <div class="mb-4">
-                <label for="nombre" class="block text-blue-400 font-bold mb-1">Nombre de la reserva</label>
-                <input 
-                    type="text" 
-                    id="nombre" 
-                    name="nombre" 
-                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
-                    required
-                >
-            </div>
-            <div class="mb-4">
-                <label for="correo" class="block text-blue-400 font-bold mb-1">Correo</label>
-                <input 
-                    type="email" 
-                    id="correo" 
-                    name="correo" 
-                    class="w-full p-2 rounded-md bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out" 
-                    required
-                >
-            </div>
-            <button type="submit" class="bg-blue-400 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded transition duration-200">
-                Enviar
-            </button>
-        </form>
-        
-
-        <h2 class="text-xl font-bold mb-4 text-blue-300 mt-8">Reservas registradas</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left bg-gray-800 rounded-md">
-                <thead class="bg-blue-600 text-white">
-                    <tr class="border-b border-gray-700 hover:bg-gray-700">
-   <tbody>
-    {% for reserva in reservas %}
-    <tr class="border-b border-gray-700 hover:bg-gray-700">
-        {% if reserva_actualizada and reserva.id == reserva_actualizada.id %}
-        <!-- Modo edición -->
-        <form action="{{ url_for('actualizar', id=reserva.id) }}" method="POST">
-            <td class="p-2"><input type="date" name="fecha" value="{{ reserva.fecha }}" class="bg-gray-600 text-white p-1 rounded" required></td>
-            <td class="p-2"><input type="time" name="hora_entrada" value="{{ reserva.hora_entrada }}" class="bg-gray-600 text-white p-1 rounded" required></td>
-            <td class="p-2"><input type="time" name="hora_salida" value="{{ reserva.hora_salida }}" class="bg-gray-600 text-white p-1 rounded" required></td>
-            <td class="p-2"><input type="text" name="nombre" value="{{ reserva.nombre }}" class="bg-gray-600 text-white p-1 rounded" required></td>
-            <td class="p-2"><input type="email" name="correo" value="{{ reserva.correo }}" class="bg-gray-600 text-white p-1 rounded" required></td>
-            <td class="p-2">
-                <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Guardar</button>
-            </td>
-        </form>
-        {% else %}
-        <!-- Modo visualización -->
-        <td class="p-2">{{ reserva.fecha }}</td>
-        <td class="p-2">{{ reserva.hora_entrada }}</td>
-        <td class="p-2">{{ reserva.hora_salida }}</td>
-        <td class="p-2">{{ reserva.nombre }}</td>
-        <td class="p-2">{{ reserva.correo }}</td>
-        <td class="p-2">
-            <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');" class="inline-block">
-                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Del</button>
-            </form>
-            <form action="{{ url_for('index') }}" method="GET" class="inline-block">
-                <input type="hidden" name="edit_id" value="{{ reserva.id }}">
-                <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
-            </form>
-        </td>
-        {% endif %}
-    </tr>
-    {% endfor %}
-</tbody>
-         </table>
+        <div>
+          <label for="hora_entrada" class="block text-teal-600 font-semibold mb-2">Hora de entrada</label>
+          <input type="time" id="hora_entrada" name="hora_entrada"
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
         </div>
+        <div>
+          <label for="hora_salida" class="block text-teal-600 font-semibold mb-2">Hora de salida</label>
+          <input type="time" id="hora_salida" name="hora_salida"
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+        </div>
+        <div>
+          <label for="materia" class="block text-teal-600 font-semibold mb-2">Materia</label>
+          <input type="text" id="materia" name="materia"
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+        </div>
+        <div class="md:col-span-2">
+          <label for="tutor" class="block text-teal-600 font-semibold mb-2">Tutor</label>
+          <input type="text" id="tutor" name="tutor"
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" required>
+        </div>
+      </div>
 
-    </main>
-</body> 
+      <div class="text-center mt-6">
+        <button type="submit"
+          class="bg-teal-500 text-white font-bold px-8 py-3 rounded-full hover:bg-teal-600 shadow-lg transition-all duration-300">
+          Enviar Reserva
+        </button>
+      </div>
+    </form>
+
+    <!-- Tabla de reservas -->
+    <h2 class="text-3xl font-semibold text-green-700 my-8 text-center">Reservas registradas</h2>
+
+    <div class="overflow-x-auto rounded-xl shadow-xl">
+      <table class="min-w-full bg-white text-sm text-center">
+        <thead class="bg-teal-600 text-white text-md uppercase">
+          <tr>
+            <th class="px-6 py-4">Fecha</th>
+            <th class="px-6 py-4">Hora Entrada</th>
+            <th class="px-6 py-4">Hora Salida</th>
+            <th class="px-6 py-4">Materia</th>
+            <th class="px-6 py-4">Tutor</th>
+            <th class="px-6 py-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {% for reserva in reservas %}
+            <tr class="hover:bg-teal-50">
+              {% if reserva_actualizada and reserva.id == reserva_actualizada.id %}
+                <form action="{{ url_for('actualizar', id=reserva.id) }}" method="POST">
+                  <td class="px-4 py-3">
+                    <input type="date" name="fecha" value="{{ reserva.fecha }}" class="bg-white text-gray p-2 rounded" required>
+                  </td>
+                  <td class="px-4 py-3">
+                    <input type="time" name="hora_entrada" value="{{ reserva.hora_entrada }}" class="bg-white text-gray p-2 rounded" required>
+                  </td>
+                  <td class="px-4 py-3">
+                    <input type="time" name="hora_salida" value="{{ reserva.hora_salida }}" class="bg-white text-gray p-2 rounded" required>
+                  </td>
+                  <td class="px-4 py-3">
+                    <input type="text" name="materia" value="{{ reserva.materia }}" class="bg-white text-gray p-2 rounded" required>
+                  </td>
+                  <td class="px-4 py-3">
+                    <input type="text" name="tutor" value="{{ reserva.tutor }}" class="bg-white text-gray p-2 rounded" required>
+                  </td>
+                  <td class="px-4 py-3">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Guardar</button>
+                  </td>
+                </form>
+              {% else %}
+                <td class="px-4 py-3">{{ reserva.fecha }}</td>
+                <td class="px-4 py-3">{{ reserva.hora_entrada }}</td>
+                <td class="px-4 py-3">{{ reserva.hora_salida }}</td>
+                <td class="px-4 py-3">{{ reserva.materia }}</td>
+                <td class="px-4 py-3">{{ reserva.tutor }}</td>
+                <td class="px-4 py-3 space-x-1">
+                  <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');" class="inline-block">
+                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Del</button>
+                  </form>
+                  <form action="{{ url_for('index') }}" method="GET" class="inline-block">
+                    <input type="hidden" name="edit_id" value="{{ reserva.id }}">
+                    <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
+                  </form>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    function toggleFormulario() {
+      const form = document.getElementById('formReserva');
+      const btn = document.getElementById('toggleFormBtn');
+      form.classList.toggle('hidden');
+      btn.classList.toggle('rotate-45');
+    }
+
+    function mostrarModalEliminar(id) {
+      const modalEliminar = document.getElementById('modalEliminar');
+      const formEliminarModal = document.getElementById('formEliminarModal');
+      formEliminarModal.action = `/eliminar-reserva/${id}`;
+      modalEliminar.classList.remove('hidden');
+    }
+
+    function ocultarModalEliminar() {
+      const modalEliminar = document.getElementById('modalEliminar');
+      modalEliminar.classList.add('hidden');
+    }
+  </script>
+</body>
 </html>
