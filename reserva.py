@@ -17,7 +17,6 @@ class Reserva(db.Model):
     hora_salida = db.Column(db.Time, nullable=False)
     materia = db.Column(db.String(50), nullable=False)
     tutor = db.Column(db.String(100), nullable=False)
-    completada = db.Column(db.Boolean, default=False)
 
 #ruta de inicio
 @app.route('/')
@@ -115,14 +114,6 @@ def actualizar(id):
 
     return redirect(url_for('index'))
 
-# Cambiar el estado de una reserva
-@app.route("/completada/<int:id>", methods=["POST"])
-def completada(id):
-    reserva = Reserva.query.get_or_404(id)
-    reserva.completada = not reserva.completada
-    db.session.commit()
-    flash("Estado de la reserva actualizado.")
-    return redirect(url_for('index'))
 
 # Main
 if __name__ == '__main__':

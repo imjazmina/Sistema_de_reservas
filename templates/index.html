@@ -25,7 +25,7 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-emerald-100 text-gray-800 font-sans">
+<body class="min-h-screen bg-white text-gray-800 font-san">
 
   <header class="flex items-center justify-between p-6 md:px-10 bg-gradient-to-r from-green-700 via-green-600 to-teal-500 text-white shadow-2xl border-b-4 border-teal-500 rounded-b-3xl">
     <a class="text-3xl font-extrabold tracking-wide" href="/">🌿 Clase Roga</a>
@@ -79,7 +79,7 @@
 
       <div class="text-center mt-8">
         <button type="submit"
-          class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-xl text-lg font-semibold transition duration-300">
+          class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl text-lg font-semibold transition duration-300">
           Reservar ahora
         </button>
       </div>
@@ -93,7 +93,6 @@
       <table class="min-w-full text-sm text-center">
         <thead class="bg-teal-600 text-white text-md uppercase">
           <tr>
-            <th class="px-6 py-4">Estado</th>
             <th class="px-6 py-4">Fecha</th>
             <th class="px-6 py-4">Hora Entrada</th>
             <th class="px-6 py-4">Hora Salida</th>
@@ -102,17 +101,12 @@
             <th class="px-6 py-4">Acciones</th>
           </tr>
         </thead>
+
         <tbody class="divide-y divide-gray-200">
           {% for reserva in reservas %}
-            <tr class="hover:bg-teal-50 transition-colors duration-200">
+            <tr class="">
               {% if reserva_actualizada and reserva.id == reserva_actualizada.id %}
                 <form action="{{ url_for('actualizar', id=reserva.id) }}" method="POST">
-                  <td class="px-4 py-3">
-                    <form action="/completada/{{ reserva.id }}" method="POST">
-                      <input type="checkbox" onchange="this.form.submit()" {% if reserva.completada %} checked {% endif %}
-                        class="w-4 h-4 accent-blue-500 rounded focus:ring-2 focus:ring-blue-400 transition duration-200" />
-                    </form>
-                  </td>
                   <td><input type="date" name="fecha" value="{{ reserva.fecha }}" class="bg-white p-2 rounded w-full {% if reserva.completada %}line-through text-gray-400{% endif %}" required></td>
                   <td><input type="time" name="hora_entrada" value="{{ reserva.hora_entrada }}" class="bg-white p-2 rounded w-full" required></td>
                   <td><input type="time" name="hora_salida" value="{{ reserva.hora_salida }}" class="bg-white p-2 rounded w-full" required></td>
@@ -123,12 +117,6 @@
                   </td>
                 </form>
               {% else %}
-                <td>
-                  <form action="/completada/{{ reserva.id }}" method="POST">
-                    <input type="checkbox" onchange="this.form.submit()" {% if reserva.completada %} checked {% endif %}
-                      class="w-4 h-4 accent-blue-500 rounded focus:ring-2 focus:ring-blue-400 transition duration-200" />
-                  </form>
-                </td>
                 <td class="px-4 py-3">{{ reserva.fecha }}</td>
                 <td class="px-4 py-3">{{ reserva.hora_entrada }}</td>
                 <td class="px-4 py-3">{{ reserva.hora_salida }}</td>
@@ -136,11 +124,11 @@
                 <td class="px-4 py-3">{{ reserva.tutor }}</td>
                 <td class="px-4 py-3 space-x-1">
                   <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');" class="inline-block">
-                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Del</button>
+                    <button type="submit" class="bg-rose-500 text-white px-3 py-1 rounded hover:bg-rose-600">Del</button>
                   </form>
-                  <form action="{{ url_for('index') }}" method="GET" class="inline-block">
+                    <form action="{{ url_for('index') }}" method="GET" class="inline-block">
                     <input type="hidden" name="edit_id" value="{{ reserva.id }}">
-                    <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
+                    <button type="submit" class="bg-amber-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
                   </form>
                 </td>
               {% endif %}
@@ -150,5 +138,37 @@
       </table>
     </div>
   </main>
+    <!-- Scripts -->
+  <script>
+    function toggleFormulario() {
+      const form = document.getElementById('formReserva');
+      const btn = document.getElementById('toggleFormBtn');
+      form.classList.toggle('hidden');
+      btn.classList.toggle('rotate-45');
+    }
+
+    function mostrarModalEliminar(id) {
+      const modalEliminar = document.getElementById('modalEliminar');
+      const formEliminarModal = document.getElementById('formEliminarModal');
+      formEliminarModal.action = /eliminar-reserva/${id};
+      modalEliminar.classList.remove('hidden');
+    }
+
+    function ocultarModalEliminar() {
+      const modalEliminar = document.getElementById('modalEliminar');
+      modalEliminar.classList.add('hidden');
+    }
+  </script>
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-green-700 to-teal-600 text-white py-8 shadow-inner rounded-t-3xl mt-12">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left px-6 gap-4">
+      <p class="text-sm">© 2025 Clase Roga. Todos los derechos reservados.</p>
+      <div class="flex space-x-6 text-lg">
+        <a href="#" class="hover:text-gray-200 transition">Facebook</a>
+        <a href="#" class="hover:text-gray-200 transition">Twitter</a>
+        <a href="#" class="hover:text-gray-200 transition">Instagram</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
