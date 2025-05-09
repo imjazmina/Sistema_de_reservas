@@ -7,21 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CODEPRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/modales.js"></script>
     <style>
         body {
             cursor: url('/static/img/tiza.png') 8 8, auto;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <header class="bg-blue-500 p-4 text-white text-xl font-bold">Reservas</header>
-    <nav class="max-w-6xl mx-auto flex justify-between items-center p-4">
-        <a href="#" class="text-xl font-bold">Sistema de Reservas</a>
-        <ul class="flex space-x-4">
-            <li><a href="#" class="hover:text-blue-400">PRINCIPAL</a></li>
-            <li><a href="#" class="hover:text-blue-400">NOTICIAS</a></li>
-        </ul>
-    </nav>
+<body class="h-screen bg-gradient-to-r from-teal-400 to-yellow-300 flex">
+    <aside class="w-1/5 bg-green-700 text-white flex flex-col items-center justify-between p-6 rounded-r-3xl">
+        <div class="space-y-8">
+          <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-green-700 text-3xl font-bold">
+            👤
+          </div>
+          <div class="text-center text-4xl font-bold">100</div>
+          <div class="text-3xl">🏆</div>
+        </div>
+      </aside>
 
     <main class="mt-6 px-4 max-w-xl mx-auto">
         <h1 class="text-left text-2xl font-bold text-gray-100 mb-6">RESERVA ALGO</h1>
@@ -86,39 +88,45 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left bg-gray-800 rounded-md">
                 <thead class="bg-blue-600 text-white">
-                    <tr>
-                        <th class="p-2">Fecha</th>
-                        <th class="p-2">Entrada</th>
-                        <th class="p-2">Salida</th>
-                        <th class="p-2">Nombre</th>
-                        <th class="p-2">Correo</th>
-                        <th class="p-2">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reserva in reservas %}
                     <tr class="border-b border-gray-700 hover:bg-gray-700">
-                        <td class="p-2">{{ reserva.fecha }}</td>
-                        <td class="p-2">{{ reserva.hora_entrada }}</td>
-                        <td class="p-2">{{ reserva.hora_salida }}</td>
-                        <td class="p-2">{{ reserva.nombre }}</td>
-                        <td class="p-2">{{ reserva.correo }}</td>
-                        <td class="p-2">
-                            <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');">
-                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                                    Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="6" class="p-2 text-center text-gray-400">No hay reservas aún.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>    
-            </table>
+   <tbody>
+    {% for reserva in reservas %}
+    <tr class="border-b border-gray-700 hover:bg-gray-700">
+        {% if reserva_actualizada and reserva.id == reserva_actualizada.id %}
+        <!-- Modo edición -->
+        <form action="{{ url_for('actualizar', id=reserva.id) }}" method="POST">
+            <td class="p-2"><input type="date" name="fecha" value="{{ reserva.fecha }}" class="bg-gray-600 text-white p-1 rounded" required></td>
+            <td class="p-2"><input type="time" name="hora_entrada" value="{{ reserva.hora_entrada }}" class="bg-gray-600 text-white p-1 rounded" required></td>
+            <td class="p-2"><input type="time" name="hora_salida" value="{{ reserva.hora_salida }}" class="bg-gray-600 text-white p-1 rounded" required></td>
+            <td class="p-2"><input type="text" name="nombre" value="{{ reserva.nombre }}" class="bg-gray-600 text-white p-1 rounded" required></td>
+            <td class="p-2"><input type="email" name="correo" value="{{ reserva.correo }}" class="bg-gray-600 text-white p-1 rounded" required></td>
+            <td class="p-2">
+                <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Guardar</button>
+            </td>
+        </form>
+        {% else %}
+        <!-- Modo visualización -->
+        <td class="p-2">{{ reserva.fecha }}</td>
+        <td class="p-2">{{ reserva.hora_entrada }}</td>
+        <td class="p-2">{{ reserva.hora_salida }}</td>
+        <td class="p-2">{{ reserva.nombre }}</td>
+        <td class="p-2">{{ reserva.correo }}</td>
+        <td class="p-2">
+            <form action="{{ url_for('eliminar_reserva', id=reserva.id) }}" method="POST" onsubmit="return confirm('¿Seguro que quiere eliminar su reserva?');" class="inline-block">
+                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Del</button>
+            </form>
+            <form action="{{ url_for('index') }}" method="GET" class="inline-block">
+                <input type="hidden" name="edit_id" value="{{ reserva.id }}">
+                <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</tbody>
+         </table>
         </div>
+
     </main>
 </body> 
 </html>

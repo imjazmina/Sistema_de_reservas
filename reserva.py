@@ -5,6 +5,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///reservas.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = 'mi_clave_secreta'  # Necesario para sesiones y flash messages
 db = SQLAlchemy(app)
 
 # Modelo de base de datos
@@ -20,7 +21,10 @@ class Reserva(db.Model):
 @app.route('/')
 def index():
     reservas = Reserva.query.order_by(Reserva.fecha).all()
-    return render_template('index.html', reservas=reservas)
+    edit_id = request.args.get('edit_id', type=int)
+    reserva_actualizada = Reserva.query.get(edit_id) if edit_id else None
+    return render_template('index.html', reservas=reservas, reserva_actualizada=reserva_actualizada)
+
 
 # Ruta para guardar reserva
 @app.route("/reservar", methods=['POST'])
@@ -30,7 +34,20 @@ def reservar():
     hora_salida = datetime.strptime(request.form['hora_salida'], '%H:%M').time()
     nombre = request.form['nombre']
     correo = request.form['correo']
-
+    if not fecha or not hora_entrada or not hora_salida or not nombre or not correo:
+        return redirect(url_for('index', error="Completar todos los campos"))
+    elif fecha < datetime.now().date():
+        return redirect(url_for('index', error="Fecha inválida"))
+    elif hora_entrada >= hora_salida:
+        return redirect(url_for('index', error="Hora inválida"))
+    reservas = Reserva.query.filter_by(fecha=fecha).all()
+    
+    # Verificar si el horario ya está reservado solo si ya hay reservas
+    if reservas:
+        for reserva in reservas:
+            if (reserva.hora_entrada <= hora_entrada <= reserva.hora_salida) or (reserva.hora_entrada <= hora_salida <= reserva.hora_salida):
+                return redirect(url_for('index', error="Turno reservado"))
+    # Si no hay conflictos, guardar la reserva
     nueva_reserva = Reserva(
         fecha=fecha,
         hora_entrada=hora_entrada,
@@ -40,7 +57,7 @@ def reservar():
     )
     db.session.add(nueva_reserva)
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('index', error="Reserva realizada con éxito"))
 
 # Ruta para eliminar una reserva
 @app.route("/eliminar-reserva/<int:id>", methods=["POST"])
@@ -49,6 +66,27 @@ def eliminar_reserva(id):
     if reserva:
         db.session.delete(reserva)
         db.session.commit()
+    return redirect(url_for('index', error="Reserva eliminada con éxito"))
+
+def parse_hora(hora_str):
+    try:
+        return datetime.strptime(hora_str, '%H:%M:%S').time()
+    except ValueError:
+        return datetime.strptime(hora_str, '%H:%M').time()
+# Ruta para editar una reserva
+
+#Ruta para editar los datos de una reserva
+@app.route('/actualizar/<int:id>', methods=['POST'])
+def actualizar(id):
+    reserva_actualizada = Reserva.query.get(id)
+
+    reserva_actualizada.fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
+    reserva_actualizada.hora_entrada = parse_hora(request.form['hora_entrada'])
+    reserva_actualizada.hora_salida = parse_hora(request.form['hora_salida'])
+    reserva_actualizada.nombre = request.form['nombre']
+    reserva_actualizada.correo = request.form['correo']
+
+    db.session.commit()
     return redirect(url_for('index'))
 
 # Main
