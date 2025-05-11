@@ -56,5 +56,5 @@ La dificultad para encontrar tutores disponibles motivó la creación de **Clase
 ### Ejecutar la aplicacion
 - python app.py
 
-Desarrollado por Lujan, Elias y Jazmin durante el hackatón de CodePro. 🤠
+Desarrollado por Lujan, Elias y Jazmin durante el hackatón de CodePro. 🤠<br>
 Mencion especial para Matias 😔
