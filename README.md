@@ -57,3 +57,4 @@ La dificultad para encontrar tutores disponibles motivó la creación de **Clase
 - python app.py
 
 Desarrollado por Lujan, Elias y Jazmin durante el hackatón de CodePro. 🤠
+Mencion especial para Matias 😔
