@@ -1,12 +1,12 @@
-# 📚 Clases Roga - Sistema de Reserva de Sesiones con Tutores
+# 📚 Clase Roga - Sistema de Reserva de Sesiones con Tutores
 
-Clases Roga es una plataforma web pensada para facilitar el encuentro entre estudiantes y tutores, permitiendo reservar sesiones de estudio de manera sencilla, rápida y desde cualquier dispositivo.
+Clase Roga es una plataforma web pensada para facilitar el encuentro entre estudiantes y tutores, permitiendo reservar sesiones de estudio de manera sencilla, rápida y desde cualquier dispositivo.
 
 ---
 
 ## 🌟 Descripción del proyecto
 
-La dificultad para encontrar tutores disponibles motivó la creación de **Clases Roga**, una comunidad digital donde los estudiantes pueden:
+La dificultad para encontrar tutores disponibles motivó la creación de **Clase Roga**, una comunidad digital donde los estudiantes pueden:
 
 - Buscar tutores por fecha y horario
 - Reservar sesiones fácilmente
